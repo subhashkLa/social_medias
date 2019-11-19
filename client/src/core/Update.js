@@ -10,7 +10,8 @@ class Update extends Component {
             name: "",
             email: "",
             error: "",
-            redirectToProfile: false
+            redirectToProfile: false,
+            fileSize: 0
         }
     }
     
@@ -27,31 +28,27 @@ class Update extends Component {
     }
 
     componentDidMount() {
+        this.userData = new FormData();
         const userId = this.props.match.params.userId;
         this.init(userId);
     }
 
-    handleChange = name => (event) => {
+    handleChange = name => event => {
+        const value = name === 'photo' ? event.target.files[0] : event.target.value;
+        this.userData.set(name, value);
         this.setState({ error: "" });
-        this.setState({[name]: event.target.value})
+        this.setState({ [name]: value })
     };
 
     clickSubmit = event => {
         event.preventDefault();
-        const { name, email} = this.state;
         const token = isAuthenciate().token;
-        const user = {
-            name: name,
-            email: email,
-        };
         const userId = this.props.match.params.userId;
-        edit(userId, token, user)
+        edit(userId, token, this.userData)
         .then(data=> {
             if(data.error) {
                 this.setState({
-                    error: data.error,
-                    name: "",
-                    email: "",
+                    error: data.error
                 });
         } else {
             this.setState({ 
@@ -64,6 +61,10 @@ class Update extends Component {
     editForm = (name, email) => (
         <form>
             <div className="form-group">
+                <label className="text-muted">Profile Photo</label>
+                <input type="file" onChange={this.handleChange("photo")} className="form-control" accept="image/*" />
+            </div>
+            <div className="form-group">
                 <label className="text-muted">Name</label>
                 <input type="text" onChange={this.handleChange("name")} className="form-control" value={name}/>
             </div>
@@ -72,7 +73,7 @@ class Update extends Component {
                 <input type="email" onChange={this.handleChange("email")} className="form-control" value={email}/>
             </div>
             <div className="form-group">
-                <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">Submit</button>
+                <button onClick={this.clickSubmit} className="btn btn-raised btn-success">Submit</button>
             </div>
         </form>
     )
@@ -85,6 +86,8 @@ class Update extends Component {
             return <Redirect to={`/user/${id}`} />;
         }
 
+        const photoUrls = id ? `/user/photo/${id}` : 'https://i.stack.imgur.com/l60Hf.pnghttps://i.stack.imgur.com/l60Hf.png';
+
         return (
             <div className="container">
                 <h1 className="mt-5 mb-5">Edit Profile</h1>
@@ -92,6 +95,8 @@ class Update extends Component {
                 <div className="alert alert-primary" style={{ display: error ? "" : "none" }}>
                     { error }
                 </div>
+
+                <img src={photoUrls} width="150" height="120"  alt={name} />
 
                 {this.editForm(name, email)}
             

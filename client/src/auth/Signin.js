@@ -67,8 +67,7 @@ class Signin extends React.Component {
         }
 
         return (
-            <div>
-                <div className="jumbotron"><h1>Signin</h1></div>
+            <div style={{ position: "relative", top: "110px"}}>
                 
                 <div className="container">
                     { this.SigninForm(email, password) }

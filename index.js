@@ -31,5 +31,5 @@ app.use(function (err, req, res, next) {
 });
 
 //port
-const port = 6000;
+const port = 4000;
 app.listen(port, () => console.log(`Node js Started ${ port }`));

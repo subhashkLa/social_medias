@@ -1,0 +1,10 @@
+.profilecontainer {
+    position: relative;
+    top: 100px;
+}
+
+@media screen and (min-width: 780px) {
+    .profilecontainer {
+        padding: 0px;
+    }
+}

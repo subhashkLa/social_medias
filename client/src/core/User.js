@@ -19,21 +19,29 @@ class User extends React.Component {
                 this.setState({ user: data });
             }
         });
-    }
+    }   
 
     renderuser = users => (
         <div className="row">
             {
                 users.map((user, i) => (
-                <div className="card col-md-6" key={i}>
-                    <img className="card-img-top" style={{width: 200, height:200}} src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/256/profile-icon.png" alt="Card cap" />
-                    <div className="card-body">
-                        <div className="lead ml-4">
-                            <h6 className="card-title">{user.name}</h6>
+                    <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={i}>
+                        <div className="padding">
+                        <div className="card">
+                        <img className="card-img" width="250" height="200" src={`/user/photo/${user._id}`} onError={i => (i.target.src = "https://timedotcom.files.wordpress.com/2015/04/512137691.jpg")} alt={user.name} />
+                        <div className="card-body">
+                            <h4 className="card-title">{user.name}</h4>
                             <p className="card-text">{user.email}</p>
+                            <div className="d-inline-block"> 
+                                <Link className="btn btn-sm btn-raised bg-primary" to={`/user/${user._id}`}>Profile</Link>                        
+                            </div>
                         </div>
-                        <Link className="btn bg-primary" to={`/user/${user._id}`}>Profile</Link>
+                        <div className="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
+                            <div className="views">Joined  {new Date(user.created).toDateString()}</div>
+                        </div>
                     </div>
+                    </div>
+                    <br />
                 </div>
             ))}
         </div>
@@ -42,12 +50,14 @@ class User extends React.Component {
     render() {
         const { user } = this.state;
 
+        const myContainer = {
+            position: "relative",
+            top: "110px",
+        };
+
         return (
             <div>
-                <div className="jumbotron">
-                    <h1>User</h1>
-                </div>
-                <div className="container">
+                <div className="container" style={myContainer}>
                     { this.renderuser(user) }
                 </div>
             </div>

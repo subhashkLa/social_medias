@@ -73,10 +73,8 @@ class Signup extends React.Component {
         }
 
         return (
-            <div>
-                <div className="jumbotron"><h1>Signup</h1></div>
-                
-                <div className="container">
+            <div>                
+                <div className="container" style={{ position: "relative", top: "110px"}}>
                     { this.SignupForm( name, email, password ) }
                 </div>
             </div>

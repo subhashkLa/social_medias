@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const uuidv1 = require("uuid/v1");
 const crypto = require("crypto");
+const { ObjectId } = mongoose.Schema;
+
 
 const UserScheme = new mongoose.Schema({
     name: {
@@ -11,6 +13,10 @@ const UserScheme = new mongoose.Schema({
         type: String,
         required: true
     },
+    photo: {
+        data: Buffer,
+        contentType: String
+    },
     hashed_password: {
         type: String,
         required: true,
@@ -20,7 +26,9 @@ const UserScheme = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    updated: Date
+    updated: Date,
+    following: [{ type: ObjectId, ref: "User" }],
+    followers: [{ type: ObjectId, ref: "User" }]
 });
 
 UserScheme.virtual('password')
